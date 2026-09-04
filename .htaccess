@@ -4,7 +4,9 @@
 <IfModule mod_headers.c>
     # Allow browser resources only from this website and the services used by AGMA.
     # This helps limit injected scripts and unauthorized data connections.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://agma-api.aselco.dev; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    # OLD CODE: connect-src allowed https://agma-api.aselco.dev, but production uses agmaapiv1.aselco.dev.
+    # SECURITY UPDATE: Allow only the real production API and Bootstrap's optional source-map requests.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://agmaapiv1.aselco.dev https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
     # Do not let the browser guess a different content type for a file.
     Header always set X-Content-Type-Options "nosniff"
