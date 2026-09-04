@@ -1,8 +1,19 @@
 body {
   font-family: 'Roboto' !important;
-  color: #000000;
-  background-color: #f7f9f7;
+  color: #1f2933;
+  background: linear-gradient(180deg, #f4f8f3 0%, #ffffff 420px);
   overflow-x: hidden;
+  line-height: 1.55;
+}
+
+/* UI UPDATE: Keep keyboard navigation easy to see. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(11, 82, 8, 0.28);
+  outline-offset: 2px;
 }
 
 img,
@@ -18,9 +29,28 @@ video {
 
 .card {
   border: 1px solid #e1e1e1;
-  box-shadow: 1px 0px 5px 2px #e1e1e1;
-  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(25, 55, 24, 0.08);
+  border-radius: 14px;
   overflow: hidden;
+}
+
+.page-card {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  border-color: #dbe6da;
+}
+
+.page-card-header {
+  padding: 1rem 1.25rem;
+  border: 0;
+}
+
+.page-title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
 .is-mod {
@@ -66,15 +96,229 @@ video {
 
 .form-control {
   min-height: 44px;
+  border: 1px solid #bdcabb;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: #24711f;
+  box-shadow: 0 0 0 0.2rem rgba(36, 113, 31, 0.14);
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #f1f4f1;
+}
+
+textarea.form-control {
+  resize: vertical;
 }
 
 button.btn {
   min-height: 44px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.primary-action {
+  min-width: 180px;
+  padding: 0.65rem 1.25rem;
+  background-color: #12640d;
+  border-color: #12640d;
+}
+
+.primary-action:hover,
+.primary-action:focus {
+  background-color: #0b5208;
+  border-color: #0b5208;
 }
 
 .loading-icon {
   text-align: center;
   width: 100%;
+  padding: 1rem;
+  color: #0b5208;
+  font-weight: 600;
+}
+
+/* UI UPDATE: Three-step progress makes the registration flow easy to understand. */
+.registration-progress {
+  width: min(760px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 auto 1.25rem;
+  padding: 0 0.5rem;
+}
+
+.progress-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: #778477;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.progress-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: calc(50% + 22px);
+  width: calc(100% - 44px);
+  height: 2px;
+  background-color: #cfd9ce;
+}
+
+.progress-step-number {
+  position: relative;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #bdc8bc;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.progress-step.is-active,
+.progress-step.is-complete {
+  color: #0b5208;
+}
+
+.progress-step.is-active .progress-step-number,
+.progress-step.is-complete .progress-step-number {
+  color: #ffffff;
+  border-color: #0b5208;
+  background-color: #0b5208;
+}
+
+.progress-step.is-complete:not(:last-child)::after {
+  background-color: #0b5208;
+}
+
+.notice-box {
+  width: fit-content;
+  max-width: 720px;
+  margin: 1rem auto;
+  padding: 0.75rem 1rem;
+  color: #334433;
+  background-color: #f0f7ef;
+  border-left: 4px solid #3d8738;
+  border-radius: 6px;
+}
+
+.form-section-heading {
+  margin: 1.5rem 0 0.8rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid #dce5db;
+}
+
+.form-section-heading:first-of-type {
+  margin-top: 0.75rem;
+}
+
+.form-section-heading h2 {
+  margin: 0;
+  color: #174f14;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.form-section-heading p {
+  margin: 0.2rem 0 0;
+  color: #687568;
+  font-size: 0.88rem;
+}
+
+.consent-copy {
+  max-width: 850px;
+  margin: 0 auto 1rem;
+  color: #3e493e;
+}
+
+.consent-actions {
+  max-width: 850px;
+  margin: 1.5rem auto 0;
+  padding: 1rem;
+  background-color: #f7faf7;
+  border: 1px solid #dce5db;
+  border-radius: 10px;
+}
+
+.consent-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.consent-option input {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 auto;
+  accent-color: #0b5208;
+}
+
+.consent-submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.confirmation-card {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.confirmation-message {
+  margin: 0.75rem 1rem 1.25rem;
+  color: #345034;
+  font-size: 1.05rem;
+}
+
+.meeting-details {
+  width: min(480px, calc(100% - 2rem));
+  margin: 0 auto 1.25rem;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  background-color: #f4f8f3;
+  border: 1px solid #cddccc;
+  border-radius: 10px;
+}
+
+.meeting-details-title {
+  margin-bottom: 0.75rem;
+  color: #174f14;
+  font-weight: 700;
+  text-align: center;
+}
+
+.meeting-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid #dce5db;
+}
+
+.meeting-detail-row span {
+  color: #667266;
+}
+
+.meeting-detail-row strong {
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.join-meeting-button {
+  text-decoration: none;
 }
 
 @media (max-width: 767.98px) {
@@ -117,6 +361,38 @@ button.btn {
   strong {
     display: block;
     margin-top: 0.55rem;
+  }
+
+  .registration-progress {
+    margin-bottom: 1rem;
+    padding: 0;
+  }
+
+  .progress-step-label {
+    font-size: 0.72rem;
+  }
+
+  .form-section-heading {
+    margin-top: 1.25rem;
+  }
+
+  .consent-submit {
+    margin-top: 1rem;
+    justify-content: stretch;
+  }
+
+  .consent-submit .btn,
+  .join-meeting-button {
+    width: 100%;
+  }
+
+  .meeting-detail-row {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .meeting-detail-row strong {
+    text-align: left;
   }
 
   input[type="radio"] {

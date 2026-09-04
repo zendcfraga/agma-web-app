@@ -1,0 +1,52 @@
+# SECURITY UPDATE: These rules are for the production React website.
+# Vite copies this file to dist/.htaccess during npm run build.
+
+<IfModule mod_headers.c>
+    # Allow browser resources only from this website and the services used by AGMA.
+    # This helps limit injected scripts and unauthorized data connections.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://agma-api.aselco.dev; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+    # Do not let the browser guess a different content type for a file.
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Do not allow another website to place AGMA inside an iframe.
+    Header always set X-Frame-Options "DENY"
+
+    # Send only the website origin when the user follows an external link.
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Disable browser features that this registration website does not use.
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+
+    # Separate this website from unrelated browser windows.
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+
+    # Disable the obsolete browser XSS filter; CSP is the safer modern control.
+    Header always set X-XSS-Protection "0"
+
+    # Production browsers must continue using HTTPS for this domain.
+    # Browsers ignore this header when the website is opened through local HTTP.
+    Header always set Strict-Transport-Security "max-age=31536000"
+
+    # Always check index.html for a new deployment instead of keeping an old app shell.
+    <FilesMatch "^index\.html$">
+        Header always set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+
+    # Vite creates hashed JavaScript and CSS names, so these can be cached safely.
+    <FilesMatch "\.(js|css)$">
+        Header always set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Keep real images, JavaScript, CSS, and other existing files accessible.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Send React routes such as /registration-page to the application entry file.
+    RewriteRule ^ index.html [L]
+</IfModule>

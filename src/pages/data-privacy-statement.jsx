@@ -1,4 +1,6 @@
-import axios from 'axios';
+// SECURITY UPDATE: Keep the old import visible for reference; the shared API client now uses VITE_API_BASE_URL.
+// import axios from 'axios';
+import api from '../api/client';
 import swal from 'sweetalert2';
 import { Routes, Route, Link } from 'react-router-dom';
 //import Registration from './attendance-registration';
@@ -15,8 +17,10 @@ function PrivacyStatement() {
     const navigate = useNavigate();
     const [cutOff, setCutOff] = useState([]);
 
-    var token = 'AGMA-06-01-2024-A$ELC0';
+    // SECURITY UPDATE: A browser-shipped token is public, so it must not be used as an API secret.
+    // var token = 'OLD_BROWSER_TOKEN_REMOVED';
 
+    /* OLD CODE: Sent a readable token from the browser and repeated the production API URL.
     function getCutOff() {
         axios({
             method: 'POST',
@@ -28,6 +32,17 @@ function PrivacyStatement() {
         }).then(function (response) {
             setCutOff(response.data.status);
         });
+    } */
+
+    // SECURITY UPDATE: This is public event information, so use GET without a fake browser secret.
+    async function getCutOff() {
+        try{
+            const response = await api.get('/api/cut-off'); // Uses the local VITE_API_BASE_URL from .env.local.
+            setCutOff(response.data.status);
+        }catch(error){
+            console.error('Unable to check registration status.'); // Do not expose internal API details to visitors.
+            setCutOff('error');
+        }
     }
 
     useEffect(() => {
